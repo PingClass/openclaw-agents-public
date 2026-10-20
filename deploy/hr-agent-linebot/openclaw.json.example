@@ -1,0 +1,127 @@
+{
+  "gateway": {
+    "mode": "local",
+    "port": 18789
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "agents": {
+    "ownership": "explicit",
+    "defaults": {
+      "model": {
+        "primary": "openrouter/google/gemini-3.7-flash",
+        "fallbacks": [
+          "openai/gpt-5.6-sol"
+        ]
+      },
+      "heartbeat": {
+        "agentId": "hr",
+        "every": "0m"
+      },
+      "systemAgent": {
+        "agentId": "hr"
+      },
+      "authInheritance": {
+        "agentId": "hr"
+      },
+      "models": {
+        "openrouter/google/gemini-3.7-flash": {},
+        "openai/gpt-5.6-sol": {
+          "agentRuntime": {
+            "id": "openclaw"
+          }
+        }
+      },
+      "modelPolicy": {
+        "allow": [
+          "openrouter/google/gemini-3.7-flash",
+          "openai/gpt-5.6-sol"
+        ]
+      },
+      "maxConcurrent": 10
+    },
+    "entries": {
+      "hr": {
+        "workspace": "/home/node/.openclaw/workspace-hr",
+        "tools": {
+          "profile": "messaging",
+          "alsoAllow": [
+            "read"
+          ],
+          "deny": [
+            "group:runtime",
+            "group:sessions",
+            "write",
+            "edit",
+            "apply_patch",
+            "message",
+            "ask_user",
+            "intent"
+          ]
+        },
+        "thinkingDefault": "low"
+      }
+    }
+  },
+  "channels": {
+    "line": {
+      "enabled": true,
+      "dmPolicy": "open",
+      "groupPolicy": "disabled",
+      "webhookPath": "/line/webhook",
+      "allowFrom": [
+        "*"
+      ]
+    }
+  },
+  "plugins": {
+    "entries": {
+      "line": {
+        "enabled": true
+      },
+      "openai": {
+        "enabled": true
+      },
+      "memory-core": {
+        "config": {
+          "dreaming": {
+            "enabled": false
+          }
+        }
+      }
+    }
+  },
+  "tools": {
+    "profile": "messaging",
+    "fs": {
+      "workspaceOnly": true
+    },
+    "elevated": {
+      "enabled": false
+    },
+    "web": {
+      "search": {
+        "enabled": false
+      },
+      "fetch": {
+        "enabled": false
+      }
+    }
+  },
+  "bindings": [
+    {
+      "agentId": "hr",
+      "comment": "所有 LINE 對話走 hr-agent。",
+      "match": {
+        "channel": "line",
+        "accountId": "*"
+      }
+    }
+  ],
+  "commands": {
+    "allowFrom": {
+      "line": []
+    }
+  }
+}

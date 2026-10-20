@@ -1,0 +1,6 @@
+.DS_Store
+agents/*/memory/*.md
+__pycache__/
+.pytest_cache/
+deploy/*/.env
+deploy/*/data/

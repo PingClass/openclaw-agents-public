@@ -1,0 +1,61 @@
+{
+  "_comment": "7 隻員工 agent 的 Identity（計畫 9.3、9.4）。只有 HRM 員工 UUID、員工編號、角色、部門與扮演的 agent，沒有個資與憑證。匯入：uv run flow-controller import-identities ../deploy/identities.json --with-agents。role：sales 業務／manager 部門主管／finance 財會／it IT 人員／hr 人資。",
+  "identities": [
+    {
+      "hrm_employee_id": "da1b72d2-89cb-4879-9c50-73e03a1ae993",
+      "employee_number": "AGT-MJOLMIRE",
+      "display_name": "Mjolmire",
+      "role": "sales",
+      "department": "業務部",
+      "agent_id": "mjolmire-businessman"
+    },
+    {
+      "hrm_employee_id": "3c75cb71-5e9c-4cc7-8bce-dcc79817299f",
+      "employee_number": "AGT-GOBTA",
+      "display_name": "Gobta",
+      "role": "sales",
+      "department": "業務部",
+      "agent_id": "gobta"
+    },
+    {
+      "hrm_employee_id": "85f9387a-6a8f-4283-92dc-71ec63de4447",
+      "employee_number": "AGT-MAIN",
+      "display_name": "Main",
+      "role": "manager",
+      "department": "業務部",
+      "agent_id": "main"
+    },
+    {
+      "hrm_employee_id": "db57df3a-d001-416b-a5aa-1add62e69144",
+      "employee_number": "AGT-HINATA",
+      "display_name": "Hinata",
+      "role": "manager",
+      "department": "客服部",
+      "agent_id": "hinata"
+    },
+    {
+      "hrm_employee_id": "895ced65-5f19-4b5b-a8b3-46529c931c1d",
+      "employee_number": "AGT-SOUEI",
+      "display_name": "Souei",
+      "role": "it",
+      "department": "資訊部",
+      "agent_id": "souei"
+    },
+    {
+      "hrm_employee_id": "6ad36d41-7561-41c5-bf1c-9f7a42ee6b2a",
+      "employee_number": "AGT-LUMINOUS",
+      "display_name": "Luminous",
+      "role": "finance",
+      "department": "管理部",
+      "agent_id": "luminous"
+    },
+    {
+      "hrm_employee_id": "3296d2ef-5716-419a-8064-458e54ac7b17",
+      "employee_number": "AGT-SHION",
+      "display_name": "Shion",
+      "role": "hr",
+      "department": "人資部",
+      "agent_id": "shion"
+    }
+  ]
+}

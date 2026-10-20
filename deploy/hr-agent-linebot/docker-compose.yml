@@ -1,0 +1,55 @@
+# hr-agent LINE bot — OpenClaw gateway（docker）
+#
+# 前置：
+#   1. ${OPENCLAW_SRC} 指向官方 OpenClaw 原始碼（build context），例如：
+#      git clone --depth 1 --branch v2026.8.1 https://github.com/openclaw/openclaw.git ../../../openclaw
+#   2. cp .env.example .env 並填值（OPENCLAW_GATEWAY_TOKEN、LINE_*、模型 API key）
+#   3. mkdir -p data/.openclaw && cp openclaw.json.example data/.openclaw/openclaw.json
+# 啟動：docker compose up -d（改 .env 後要 up -d --force-recreate，restart 不會重讀）
+
+name: openclaw-hr
+
+services:
+  openclaw:
+    build:
+      context: ${OPENCLAW_SRC:-../../../openclaw}
+      args:
+        # line、codex 都是外部 plugin，預設不 bundle 進 image；明確指定才會有。
+        # codex：用 ChatGPT 訂閱（OpenAI OAuth）跑 agent 時必須，啟用時要 --accept-capabilities。
+        OPENCLAW_EXTENSIONS: "line codex"
+    image: openclaw-hr:local
+    container_name: openclaw-hr
+    restart: unless-stopped
+    init: true
+    # 容器內必須綁 0.0.0.0，host 才連得到；因此 .env 的 OPENCLAW_GATEWAY_TOKEN 必填。
+    command: ["node", "openclaw.mjs", "gateway", "--bind", "lan", "--port", "18789"]
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      HOME: /home/node
+      OPENCLAW_HOME: /home/node
+      # 釘死容器內路徑，避免 host 路徑從 .env 洩漏進來
+      OPENCLAW_STATE_DIR: /home/node/.openclaw
+      OPENCLAW_CONFIG_PATH: /home/node/.openclaw/openclaw.json
+      OPENCLAW_CONFIG_DIR: /home/node/.openclaw
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN:?OPENCLAW_GATEWAY_TOKEN is required}
+      OPENCLAW_DISABLE_BONJOUR: 1
+      TZ: Asia/Taipei
+      # LINE_CHANNEL_ACCESS_TOKEN / LINE_CHANNEL_SECRET / 模型 API key 由 env_file 帶入；
+      # LINE channel（default account）直接讀這兩個環境變數。
+    volumes:
+      # 狀態、設定、session、pairing 紀錄（已在 .gitignore）
+      - ./data/.openclaw:/home/node/.openclaw
+      # hr-agent workspace 直接掛 repo 內的定義（唯讀）；更新 = git pull 後 restart。
+      # 唯讀是為了擋 `openclaw doctor --fix` 的 workspace 遷移（會把 TOOLS.md 併進 AGENTS.md 並刪檔）改到 repo。
+      - ../../agents/hr-agent:/home/node/.openclaw/workspace-hr:ro
+      # 只有 memory/ 可寫；memory/*.md 已被 repo .gitignore 排除。
+      - ../../agents/hr-agent/memory:/home/node/.openclaw/workspace-hr/memory
+    cap_drop:
+      - NET_RAW
+      - NET_ADMIN
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "${GATEWAY_PORT:-18796}:18789"

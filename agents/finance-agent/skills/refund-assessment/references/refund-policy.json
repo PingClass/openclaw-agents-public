@@ -1,0 +1,20 @@
+{
+  "is_placeholder": true,
+  "note": "demo 假價格與 demo 退款政策：財會提供正式價目表與退款辦法前，只用來讓流程 ② 跑得起來。正式資料請另存一份 JSON，用 REFUND_POLICY_FILE 指過去，並把 is_placeholder 設為 false。",
+  "policy": {
+    "refund_ratio": 1.0,
+    "compensation_ratio": 0.5,
+    "medium_amount_twd": 10000,
+    "escalate_amount_twd": 50000,
+    "repeat_cases_escalate": 2
+  },
+  "products": [
+    {"name": "黑糖粉圓（6kg 箱裝）", "aliases": ["黑糖粉圓6kg", "黑糖粉圓箱裝"], "unit": "箱", "unit_price_twd": 600},
+    {"name": "黑糖粉圓（1kg 冷凍包）", "aliases": ["黑糖粉圓"], "unit": "包", "unit_price_twd": 120},
+    {"name": "原味珍珠粉圓（3kg 業務包）", "aliases": ["原味珍珠粉圓", "珍珠粉圓"], "unit": "包", "unit_price_twd": 300},
+    {"name": "小粉圓（1kg）", "aliases": ["小粉圓"], "unit": "包", "unit_price_twd": 100},
+    {"name": "芋圓綜合包（600g）", "aliases": ["芋圓綜合包", "芋圓"], "unit": "包", "unit_price_twd": 90},
+    {"name": "地瓜圓（1kg）", "aliases": ["地瓜圓"], "unit": "包", "unit_price_twd": 110},
+    {"name": "冷凍粉圓（6kg 箱裝，未指定口味）", "aliases": ["冷凍粉圓", "粉圓"], "unit": "箱", "unit_price_twd": 600}
+  ]
+}
