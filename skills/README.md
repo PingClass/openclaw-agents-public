@@ -6,6 +6,7 @@
 2. **員工 agent 的模擬營運 skill**（計畫 9.3）：`agent-crm`、`agent-adm`、`agent-inbox`、`agent-hrm`，以及 milim 扮客戶的
    [`customer-sim`](customer-sim/README.md)。
 3. **文書處理 skill**（課程單元 5 補充）：見文末〈文書處理 skill〉一節。
+4. **排程管理 skill**：`openclaw-cron`，給管理 gateway 的 coding agent（Claude Code、Codex）用，見文末〈排程管理 skill〉一節。
 
 ## 工作流共用 skill：flow-start、flow-report
 
@@ -258,3 +259,18 @@ for s in excel-xlsx invoice-to-xlsx paper-receipt-labels pdf-split slide-deck; d
   rsync -a --delete "skills/$s/" "$HOME/.openclaw/skills/$s/"
 done
 ```
+
+## 排程管理 skill
+
+| skill | 用途 |
+|---|---|
+| [`openclaw-cron`](openclaw-cron/SKILL.md) | 用 `openclaw cron`（＝`openclaw automations`）建立、修改、除錯排程；對齊 OpenClaw 2026.10.9 |
+
+這個 skill 是給在 gateway 主機上操作的 coding agent 用的，不是給 OpenClaw 裡的助理 agent，所以部署到 coding agent 的 skill 目錄：
+
+```bash
+cd ~/services/openclaw-agents && git pull
+rsync -a --delete skills/openclaw-cron/ "$HOME/.claude/skills/openclaw-cron/"
+```
+
+注意：OpenClaw 已把排程改存在 SQLite，舊版 skill 教的「直接改 `~/.openclaw/cron/jobs.json`」已經無效，一律用 `openclaw cron edit`。
