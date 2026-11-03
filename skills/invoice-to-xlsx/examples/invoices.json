@@ -1,0 +1,15 @@
+{
+  "invoices": [
+    {
+      "invoice_number": "EXAMPLE1-0001",
+      "issue_date": "2026-06-30",
+      "payment_date": "2026-06-30",
+      "currency": "USD",
+      "total": 196.64,
+      "items": [
+        { "description": "Claude Pro（2026-06-30 至 2027-06-30）", "amount": 200.00 },
+        { "description": "Unused time on Claude Pro after 01 Jul 2026（2026-06-30 至 2026-07-05）", "amount": -3.36 }
+      ]
+    }
+  ]
+}

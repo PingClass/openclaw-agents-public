@@ -5,6 +5,7 @@
 1. **工作流共用 skill**（計畫 5.1）：助理 agent 和 controller 溝通用的 `flow-start`、`flow-report`，見下一節。
 2. **員工 agent 的模擬營運 skill**（計畫 9.3）：`agent-crm`、`agent-adm`、`agent-inbox`、`agent-hrm`，以及 milim 扮客戶的
    [`customer-sim`](customer-sim/README.md)。
+3. **文書處理 skill**（課程單元 5 補充）：見文末〈文書處理 skill〉一節。
 
 ## 工作流共用 skill：flow-start、flow-report
 
@@ -236,3 +237,24 @@ python3 -m unittest discover -s skills/customer-sim/tests -v
 agent-* 的測試用 `http.server` 做的假 CRM、ADM、HRM、controller，加上假的 `openclaw` 執行檔，涵蓋：擲骰門檻、重跑不重擲骰、
 回應遺失不重複建立（含 HRM 建員工／Employment）、409 換時段最多 2 次、一次性 token 已用／重送、網路錯誤重試、`--dry-run` 不連網也能跑。
 只用標準函式庫，Python 3.9 以上。
+
+## 文書處理 skill
+
+課程單元 5 的補充 skill，只需要 `python3`（各 skill 的套件需求見 `references/setup.md`），不連 controller、不需要 token。
+
+| skill | 用途 |
+|---|---|
+| [`excel-xlsx`](excel-xlsx/SKILL.md) | 建立、檢查、編輯 Excel／XLSX 的通用規則（第三方 skill，ClawHub `ivangdavila/excel-xlsx` v1.0.2，MIT-0） |
+| [`invoice-to-xlsx`](invoice-to-xlsx/SKILL.md) | 讀發票 PDF，整理發票號碼、日期、項目、金額、幣別成 xlsx |
+| [`paper-receipt-labels`](paper-receipt-labels/SKILL.md) | 把紙本發票寄送紀錄 Excel 合併列印成 A4 標籤，輸出 PDF 與 ZIP |
+| [`pdf-split`](pdf-split/SKILL.md) | 依頁數範圍分割 PDF |
+| [`slide-deck`](slide-deck/SKILL.md) | 從需求描述、Markdown 或 .docx 產生可編輯的 .pptx（可附 PDF） |
+
+部署：
+
+```bash
+cd ~/services/openclaw-agents && git pull
+for s in excel-xlsx invoice-to-xlsx paper-receipt-labels pdf-split slide-deck; do
+  rsync -a --delete "skills/$s/" "$HOME/.openclaw/skills/$s/"
+done
+```

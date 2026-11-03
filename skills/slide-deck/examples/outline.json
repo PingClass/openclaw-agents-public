@@ -1,0 +1,23 @@
+{
+  "title": "單元五：光合作用",
+  "theme": "light",
+  "slides": [
+    {"layout": "title", "kicker": "自然科學・單元五", "title": "光合作用", "subtitle": "植物如何把陽光變成養分", "byline": "七年級自然・第 5 課",
+     "notes": "【開場 2 分鐘】問學生：植物不用吃飯，為什麼會長大？收集 2–3 個答案，不急著糾正。"},
+    {"layout": "section", "number": "01", "title": "植物需要什麼？", "subtitle": "從日常觀察開始"},
+    {"layout": "bullets", "kicker": "觀察", "title": "植物生長的四個條件",
+     "bullets": ["陽光：提供能量", {"text": "水：從根部吸收", "sub": ["經由莖運送到葉子"]}, "二氧化碳：從葉片氣孔進入", "葉綠素：讓葉子呈現綠色"],
+     "notes": "【5 分鐘】每講一點就請學生舉一個生活例子。預期回答：放在窗邊的盆栽長得比較好。"},
+    {"layout": "statement", "kicker": "核心概念", "text": "光合作用，就是植物用光能製造葡萄糖。", "caption": "這一課所有內容都圍繞這一句話。"},
+    {"layout": "two-column", "title": "光合作用 vs. 呼吸作用",
+     "left": {"heading": "光合作用", "bullets": ["只在有光時進行", "吸收二氧化碳", "釋放氧氣"]},
+     "right": {"heading": "呼吸作用", "bullets": ["白天晚上都進行", "吸收氧氣", "釋放二氧化碳"]}},
+    {"layout": "stats", "title": "地球上的光合作用", "stats": [{"value": "50%", "label": "大氣中的氧氣來自海洋藻類"}, {"value": "1%", "label": "照到葉子的陽光被轉成化學能"}, {"value": "6", "label": "製造一個葡萄糖需要的二氧化碳分子數"}]},
+    {"layout": "steps", "title": "光合作用的流程", "steps": [{"title": "吸收光能", "text": "葉綠素吸收紅光與藍光"}, {"title": "分解水", "text": "水分子被拆成氫和氧，氧氣被釋放"}, {"title": "固定二氧化碳", "text": "二氧化碳和氫結合"}, {"title": "產生葡萄糖", "text": "儲存能量，供植物生長使用"}]},
+    {"layout": "image-text", "title": "葉綠體在哪裡？", "image": "sample.png", "bullets": ["位在葉肉細胞裡", "一個細胞有數十個葉綠體", "形狀像扁平的橢圓"]},
+    {"layout": "image", "title": "顯微鏡下的葉片", "image": "sample.png", "caption": "圖：示意圖，請替換成實際照片"},
+    {"layout": "table", "title": "實驗紀錄表", "columns": ["組別", "光照", "時間", "氣泡數"], "rows": [["A", "有", "10 分鐘", "24"], ["B", "無", "10 分鐘", "2"], ["C", "弱光", "10 分鐘", "9"]]},
+    {"layout": "quote", "quote": "陽光是地球上幾乎所有生命的能量來源。", "author": "課本第 82 頁"},
+    {"layout": "end", "title": "謝謝大家", "subtitle": "下週：呼吸作用"}
+  ]
+}

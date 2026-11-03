@@ -1,0 +1,44 @@
+===== 檔案：/home/node/.openclaw/workspace/inbox/Invoice-EXAMPLE1-0001.pdf（共 1 頁）=====
+--- 第 1 頁 ---
+Invoice
+
+Invoice number EXAMPLE1-0001
+Date of issue   June 30, 2026
+Date due       June 30, 2026
+
+Anthropic, PBC                                                Bill to
+
+548 Market Street                               Wang Xiaoming
+PMB 90375                                 104
+San Francisco, California 94104              台北市Da'an Dist.,
+United States                                 No. 1, Sec. 1, Example Rd.,
+support@anthropic.com                        Taiwan
+                                             student@example.com
+                               TW VAT 12345678
+
+$196.64 USD due June 30, 2026
+
+Pay online
+
+While we prefer electronic payment methods,
+any checks must be sent to the address below, NOT to our San Francisco office.
+----------------------------
+PAYMENT ADDRESS:
+Anthropic, PBC
+P.O. Box 104477
+Pasadena, CA 91189-4477
+
+Description                                                                                  Qty         Unit price             Amount
+
+Claude Pro                                                                                   1      $200.00          $200.00
+Jun 30, 2026–Jun 30, 2027
+
+Unused time on Claude Pro after 01 Jul 2026                                                 1                          -$3.36
+Jun 30–Jul 5, 2026
+
+                                                              Subtotal                                          $196.64
+                                                                  Total                                             $196.64
+                                                Amount due                                $196.64 USD
+
+                                                                                                                   Page 1 of 1
+
