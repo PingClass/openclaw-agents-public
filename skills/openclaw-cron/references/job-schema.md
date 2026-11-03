@@ -20,7 +20,7 @@
   "payload": { "...": "見下" },
   "delivery": { "...": "見下" },
   "scheduledToolPolicy": { "version": 1, "mode": "trusted" },
-  "failureAlert": null,
+  "failureAlert": null,          // 設了 --failure-alert --failure-alert-after 3 → { "after": 3 }
   "state": { "...": "見下" },
   "configRevision": "string",
   "effectiveAgentId": "main",
@@ -35,10 +35,11 @@
 ```json
 { "kind": "cron", "expr": "49 10-17 * * 1-5", "tz": "Asia/Taipei", "staggerMs": 0 }
 { "kind": "at", "at": "2026-12-01T01:00:00Z" }
-{ "kind": "every", "...": "以 --every 10m 等 duration 建立（實際欄位名未查證）" }
+{ "kind": "every", "everyMs": 3600000, "anchorMs": 1793695382515 }
 ```
 
 `staggerMs: 0` 對應 `--exact`。
+`--every 1h` 存成 `everyMs`（毫秒），`anchorMs` 是起算點（2026.8.1、2026.10.10 實測）。
 
 ## payload
 

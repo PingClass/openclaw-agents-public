@@ -264,7 +264,7 @@ done
 
 | skill | 用途 |
 |---|---|
-| [`openclaw-cron`](openclaw-cron/SKILL.md) | 用 `openclaw cron`（＝`openclaw automations`）建立、修改、除錯排程；對齊 OpenClaw 2026.10.9 |
+| [`openclaw-cron`](openclaw-cron/SKILL.md) | 用 `openclaw cron`（＝`openclaw automations`）建立、修改、除錯排程（含推播到 LINE）；對齊 OpenClaw 2026.10.x，2026.10.10 實測 |
 
 這個 skill 是給在 gateway 主機上操作的 coding agent 用的，不是給 OpenClaw 裡的助理 agent，所以部署到 coding agent 的 skill 目錄：
 

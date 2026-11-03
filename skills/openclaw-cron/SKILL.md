@@ -8,13 +8,16 @@ description: 建立、修改、除錯 OpenClaw 排程（automations／cron）。
 Gateway 內建的排程器：時間到就叫醒 agent 執行，結果可選擇送到聊天頻道。
 **gateway 沒開，排程就不會觸發。**
 
-> 本檔對齊 OpenClaw 2026.10.9（2026-11-03 以 `--help` 與實際 job 查證）。
+> 本檔對齊 OpenClaw 2026.10.x：2026-11-03 在 2026.10.10 實跑過 add → get → run → runs → edit → rm 全流程，
+> 並實際用 LINE 推播成功。舊版差異見文末〈版本差異〉。
 > 版本更新後先跑 `openclaw cron add --help` 對照；文件：https://docs.openclaw.ai/cli/cron
 
 ## 指令名稱
 
 `openclaw cron` 與 `openclaw automations` 是同一組指令（互為別名）；`add` 與 `create` 也是別名。
-Homebrew 安裝，一律用裸的 `openclaw`（`/opt/homebrew/bin/openclaw`），資料目錄 `~/.openclaw`。
+Homebrew 安裝用裸的 `openclaw`（`/opt/homebrew/bin/openclaw`），資料目錄 `~/.openclaw`。
+Docker 部署的 gateway 要進容器跑：`docker compose exec -T openclaw node openclaw.mjs cron ...`（在 compose 目錄下）。
+先跑 `openclaw --version`；8.x 以前的差異見文末〈版本差異〉。
 
 ## ⚠️ 不要直接改檔案
 
@@ -32,7 +35,7 @@ Homebrew 安裝，一律用裸的 `openclaw`（`/opt/homebrew/bin/openclaw`）�
 | `openclaw cron add ...` | 建立 |
 | `openclaw cron edit <id> ...` | 修改（只改有帶的欄位） |
 | `openclaw cron run <id> [--wait]` | 立刻跑一次（`--due` 只在到期時跑） |
-| `openclaw cron runs <id> [--limit N] [--status ...] [--query ...]` | 執行紀錄；`--all` 看全部 job |
+| `openclaw cron runs <id> --limit N` | 執行紀錄；可加 `--status ok\|error`、`--query "<關鍵字>"`，`--all` 看全部 job |
 | `openclaw cron enable/disable <id>` | 啟用／停用 |
 | `openclaw cron rm <id>` | 刪除 |
 | `openclaw cron scratch <id>` | 讀寫該 job 的私有暫存區 |
@@ -76,6 +79,21 @@ openclaw cron add --name "Morning brief" --cron "0 7 * * *" --tz "Asia/Taipei" \
   --announce --channel discord --to "<channel-id>"
 ```
 
+### 推播到 LINE（2026.10.10 實測送達）
+
+```bash
+openclaw cron add --name "LINE 推播測試" --at 2m --tz "Asia/Taipei" \
+  --session isolated --agent hr --tools "" \
+  --message "請只輸出下面這一行，不要加任何其他文字：⏰ 排程推播測試成功" \
+  --announce --channel line --to "<LINE userId>"
+openclaw cron runs <id> --limit 1     # 看 deliveryStatus: delivered
+```
+
+- `--to` 是對方的 LINE userId（大寫 `U` 開頭＋32 碼）。查法：請對方先私訊 bot，再跑
+  `openclaw sessions --agent <agentId>`，最新一筆 `agent:<id>:line:direct:u…` 的 `u…` 改成大寫 `U` 就是。
+- **不要用 `--channel last`** 推給特定人：它送到最後一個跟 bot 互動的人，開放給多人用的 bot 會推錯對象。
+- `--at 2m` 這類一次性 job 送達成功後會自動刪除，適合拿來測推播。
+
 ## Payload（每個 job 只能有一種）
 
 | 類型 | 參數 | 說明 |
@@ -89,7 +107,7 @@ openclaw cron add --name "Morning brief" --cron "0 7 * * *" --tz "Asia/Taipei" \
 
 `--session main|isolated|current|session:<id>`
 - `main`：在 agent 主對話裡跑，帶既有 context。
-- `isolated`：每次全新 session（key `cron:<jobId>`），適合報告與背景工作。
+- `isolated`：每次全新 session（key 形如 `agent:<agentId>:cron:<jobId>:run:<sessionId>`），適合報告與背景工作。
 - `current`：綁定建立當下的對話；`session:<id>`：固定的持久 session。
 
 ## 常用參數
@@ -100,7 +118,7 @@ openclaw cron add --name "Morning brief" --cron "0 7 * * *" --tz "Asia/Taipei" \
 | `--agent <id>` | 綁定 agent（edit 用 `--clear-agent` 解除） |
 | `--disabled` | 建立時先停用（edit 用 `--enable` / `--disable`） |
 | `--model` / `--fallbacks` / `--thinking` | 模型、備援、思考等級（edit 有 `--clear-*`） |
-| `--tools <list>` | 工具白名單；`""` 關閉所有工具（存成 `payload.toolsAllow`） |
+| `--tools <list>` | 工具白名單（存成 `payload.toolsAllow`）；`--tools ""` 關閉所有工具（存成 `[]`），`--tools read` 只開讀取 |
 | `--light-context` | 精簡 bootstrap context |
 | `--timeout-seconds <n>` | agent／command 逾時 |
 | `--exact` / `--stagger <dur>` | 關閉／設定 cron 錯開時間 |
@@ -122,11 +140,11 @@ openclaw cron edit <id> --failure-alert --failure-alert-after 3 \
 
 ## 除錯
 
-1. `openclaw cron runs <id> --limit 5`（或 `--status error`、`--query "<關鍵字>"`）看 status／error。
+1. `openclaw cron runs <id> --limit 5` 看 `status`、`summary`、`error`、`model`、`deliveryStatus`（可加 `--status error`、`--query "<關鍵字>"`）。
 2. `openclaw cron show <id>` 看 `state.lastStatus`、`consecutiveErrors`、`lastDeliveryStatus`。
 3. 手動重現：`openclaw cron run <id> --wait`。
 4. Log：`~/.openclaw/logs/gateway.log`、`gateway.err.log`；每日 log 在 `/tmp/openclaw/openclaw-YYYY-MM-DD.log`。
-5. isolated 的 session 紀錄：`~/.openclaw/agents/<agentId>/sessions/`。
+5. session 紀錄：`openclaw sessions --agent <agentId>`（10.x 存在 SQLite；舊版在 `~/.openclaw/agents/<agentId>/sessions/`）。
 
 常見錯誤：
 - `model not allowed: <model>` → `openclaw cron edit <id> --clear-model` 或換允許的模型。
@@ -136,3 +154,12 @@ openclaw cron edit <id> --failure-alert --failure-alert-after 3 \
 - 版本升級後怪怪的 → `openclaw doctor --fix` 會正規化舊版 automation 儲存。
 
 JSON 結構見 `references/job-schema.md`。
+
+## 版本差異（2026.8.1 實測）
+
+8.x 以前的 gateway（例如 docker 部署還沒升級的）有兩處不同，先 `openclaw --version` 確認：
+
+- `cron runs` 一定要寫 `--id <id>`；直接寫 id 會報 `Missing required option "--id"`，也沒有 `--status`、`--query`、`--all`。
+  `--id` 寫法在 10.x 也能用，要寫跨版本的腳本就用 `--id`。
+- `--tools ""` 沒有效果，存進去仍是 `["*"]`（所有工具）。舊版要限制工具請列出明確清單，設完用 `get` 確認 `payload.toolsAllow`。
+
